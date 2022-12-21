@@ -4,11 +4,17 @@ type OrderPrimarKey struct {
 	Id string `json:"order_id"`
 }
 
+type CreateOrderSwagger struct {
+	User_id string `json:"user_id"`
+	Book_id string `json:"book_id"`
+}
+
 type CreateOrder struct {
 	User_id string  `json:"user_id"`
 	Book_id string  `json:"book_id"`
 	Payed   float64 `json:"payed"`
 }
+
 type Order struct {
 	Id        string  `json:"order_id"`
 	User_id   string  `json:"user_id"`
@@ -18,11 +24,17 @@ type Order struct {
 	UpdatedAt string  `json:"updated_at"`
 }
 
+type UpdateOrderSwagger struct {
+	User_id string `json:"user_id"`
+	Book_id string `json:"book_id"`
+}
+
 type UpdateOrder struct {
-	Id      string  `json:"order_id"`
-	User_id string  `json:"user_id"`
-	Book_id string  `json:"book_id"`
-	Payed   float64 `json:"payed"`
+	Id        string  `json:"order_id"`
+	User_id   string  `json:"user_id"`
+	Book_id   string  `json:"book_id"`
+	Payed     float64 `json:"payed"`
+	UpdatedAt string  `json:"updated_at"`
 }
 
 type GetListOrderRequest struct {

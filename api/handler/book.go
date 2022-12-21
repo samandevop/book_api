@@ -151,7 +151,7 @@ func (h *HandlerV1) GetBookList(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "id"
-// @Param book body models.UpdateBook true "CreateBookRequestBody"
+// @Param book body models.UpdateBookSwagger true "CreateBookRequestBody"
 // @Success 200 {object} models.Book "GetBooksBody"
 // @Response 400 {object} string "Invalid Argument"
 // @Failure 500 {object} string "Server Error"

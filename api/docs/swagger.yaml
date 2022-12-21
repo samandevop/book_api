@@ -23,12 +23,10 @@ definitions:
       title:
         type: string
     type: object
-  models.CreateOrder:
+  models.CreateOrderSwagger:
     properties:
       book_id:
         type: string
-      payed:
-        type: number
       user_id:
         type: string
     type: object
@@ -85,29 +83,23 @@ definitions:
       user_id:
         type: string
     type: object
-  models.UpdateBook:
+  models.UpdateBookSwagger:
     properties:
       author:
-        type: string
-      book_id:
         type: string
       price:
         type: number
       title:
         type: string
     type: object
-  models.UpdateOrder:
+  models.UpdateOrderSwagger:
     properties:
       book_id:
         type: string
-      order_id:
-        type: string
-      payed:
-        type: number
       user_id:
         type: string
     type: object
-  models.UpdateUser:
+  models.UpdateUserSwagger:
     properties:
       balance:
         type: number
@@ -116,8 +108,6 @@ definitions:
       last_name:
         type: string
       phone_number:
-        type: string
-      user_id:
         type: string
     type: object
   models.User:
@@ -278,7 +268,7 @@ paths:
         name: book
         required: true
         schema:
-          $ref: '#/definitions/models.UpdateBook'
+          $ref: '#/definitions/models.UpdateBookSwagger'
       produces:
       - application/json
       responses:
@@ -341,7 +331,7 @@ paths:
         name: order
         required: true
         schema:
-          $ref: '#/definitions/models.CreateOrder'
+          $ref: '#/definitions/models.CreateOrderSwagger'
       produces:
       - application/json
       responses:
@@ -435,7 +425,7 @@ paths:
         name: order
         required: true
         schema:
-          $ref: '#/definitions/models.UpdateOrder'
+          $ref: '#/definitions/models.UpdateOrderSwagger'
       produces:
       - application/json
       responses:
@@ -592,7 +582,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/models.UpdateUser'
+          $ref: '#/definitions/models.UpdateUserSwagger'
       produces:
       - application/json
       responses:

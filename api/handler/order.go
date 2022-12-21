@@ -20,7 +20,7 @@ import (
 // @Tags Order
 // @Accept json
 // @Produce json
-// @Param order body models.CreateOrder true "CreateOrderRequestBody"
+// @Param order body models.CreateOrderSwagger true "CreateOrderRequestBody"
 // @Success 201 {object} models.Order "GetOrderBody"
 // @Response 400 {object} string "Invalid Argument"
 // @Failure 500 {object} string "Server Error"
@@ -151,7 +151,7 @@ func (h *HandlerV1) GetOrderList(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "id"
-// @Param order body models.UpdateOrder true "CreateOrderRequestBody"
+// @Param order body models.UpdateOrderSwagger true "CreateOrderRequestBody"
 // @Success 200 {object} models.Order "GetOrdersBody"
 // @Response 400 {object} string "Invalid Argument"
 // @Failure 500 {object} string "Server Error"

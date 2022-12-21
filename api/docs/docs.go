@@ -182,7 +182,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.UpdateBook"
+                            "$ref": "#/definitions/models.UpdateBookSwagger"
                         }
                     }
                 ],
@@ -320,7 +320,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CreateOrder"
+                            "$ref": "#/definitions/models.CreateOrderSwagger"
                         }
                     }
                 ],
@@ -417,7 +417,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.UpdateOrder"
+                            "$ref": "#/definitions/models.UpdateOrderSwagger"
                         }
                     }
                 ],
@@ -652,7 +652,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.UpdateUser"
+                            "$ref": "#/definitions/models.UpdateUserSwagger"
                         }
                     }
                 ],
@@ -760,14 +760,11 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CreateOrder": {
+        "models.CreateOrderSwagger": {
             "type": "object",
             "properties": {
                 "book_id": {
                     "type": "string"
-                },
-                "payed": {
-                    "type": "number"
                 },
                 "user_id": {
                     "type": "string"
@@ -856,13 +853,10 @@ const docTemplate = `{
                 }
             }
         },
-        "models.UpdateBook": {
+        "models.UpdateBookSwagger": {
             "type": "object",
             "properties": {
                 "author": {
-                    "type": "string"
-                },
-                "book_id": {
                     "type": "string"
                 },
                 "price": {
@@ -873,24 +867,18 @@ const docTemplate = `{
                 }
             }
         },
-        "models.UpdateOrder": {
+        "models.UpdateOrderSwagger": {
             "type": "object",
             "properties": {
                 "book_id": {
                     "type": "string"
-                },
-                "order_id": {
-                    "type": "string"
-                },
-                "payed": {
-                    "type": "number"
                 },
                 "user_id": {
                     "type": "string"
                 }
             }
         },
-        "models.UpdateUser": {
+        "models.UpdateUserSwagger": {
             "type": "object",
             "properties": {
                 "balance": {
@@ -903,9 +891,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "phone_number": {
-                    "type": "string"
-                },
-                "user_id": {
                     "type": "string"
                 }
             }

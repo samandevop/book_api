@@ -20,6 +20,13 @@ type User struct {
 	UpdatedAt    string  `json:"updated_at"`
 }
 
+type UpdateUserSwagger struct {
+	First_name   string  `json:"first_name"`
+	Last_name    string  `json:"last_name"`
+	Phone_number string  `json:"phone_number"`
+	Balance      float64 `json:"balance"`
+}
+
 type UpdateUser struct {
 	Id           string  `json:"user_id"`
 	First_name   string  `json:"first_name"`

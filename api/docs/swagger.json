@@ -170,7 +170,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.UpdateBook"
+                            "$ref": "#/definitions/models.UpdateBookSwagger"
                         }
                     }
                 ],
@@ -308,7 +308,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CreateOrder"
+                            "$ref": "#/definitions/models.CreateOrderSwagger"
                         }
                     }
                 ],
@@ -405,7 +405,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.UpdateOrder"
+                            "$ref": "#/definitions/models.UpdateOrderSwagger"
                         }
                     }
                 ],
@@ -640,7 +640,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.UpdateUser"
+                            "$ref": "#/definitions/models.UpdateUserSwagger"
                         }
                     }
                 ],
@@ -748,14 +748,11 @@
                 }
             }
         },
-        "models.CreateOrder": {
+        "models.CreateOrderSwagger": {
             "type": "object",
             "properties": {
                 "book_id": {
                     "type": "string"
-                },
-                "payed": {
-                    "type": "number"
                 },
                 "user_id": {
                     "type": "string"
@@ -844,13 +841,10 @@
                 }
             }
         },
-        "models.UpdateBook": {
+        "models.UpdateBookSwagger": {
             "type": "object",
             "properties": {
                 "author": {
-                    "type": "string"
-                },
-                "book_id": {
                     "type": "string"
                 },
                 "price": {
@@ -861,24 +855,18 @@
                 }
             }
         },
-        "models.UpdateOrder": {
+        "models.UpdateOrderSwagger": {
             "type": "object",
             "properties": {
                 "book_id": {
                     "type": "string"
-                },
-                "order_id": {
-                    "type": "string"
-                },
-                "payed": {
-                    "type": "number"
                 },
                 "user_id": {
                     "type": "string"
                 }
             }
         },
-        "models.UpdateUser": {
+        "models.UpdateUserSwagger": {
             "type": "object",
             "properties": {
                 "balance": {
@@ -891,9 +879,6 @@
                     "type": "string"
                 },
                 "phone_number": {
-                    "type": "string"
-                },
-                "user_id": {
                     "type": "string"
                 }
             }

@@ -151,7 +151,7 @@ func (h *HandlerV1) GetUserList(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "id"
-// @Param user body models.UpdateUser true "CreateUserRequestBody"
+// @Param user body models.UpdateUserSwagger true "CreateUserRequestBody"
 // @Success 200 {object} models.User "GetUsersBody"
 // @Response 400 {object} string "Invalid Argument"
 // @Failure 500 {object} string "Server Error"

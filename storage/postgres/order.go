@@ -25,9 +25,19 @@ func NewOrderRepo(db *pgxpool.Pool) *OrderRepo {
 func (f *OrderRepo) Create(ctx context.Context, order *models.CreateOrder) (string, error) {
 
 	var (
-		id    = uuid.New().String()
-		query string
+		id            = uuid.New().String()
+		payed         sql.NullFloat64
+		queryGetPrice string
+		query         string
 	)
+
+	queryGetPrice = `
+		SELECT
+			price
+		FROM
+			books
+		WHERE book_id = $1
+	`
 
 	query = `
 		INSERT INTO orders(
@@ -39,11 +49,20 @@ func (f *OrderRepo) Create(ctx context.Context, order *models.CreateOrder) (stri
 		) VALUES ( $1, $2, $3, $4, now() )
 	`
 
-	_, err := f.db.Exec(ctx, query,
+	err := f.db.QueryRow(ctx, queryGetPrice, order.Book_id).
+		Scan(
+			&payed,
+		)
+
+	if err != nil {
+		return "", err
+	}
+
+	_, err = f.db.Exec(ctx, query,
 		id,
 		order.User_id,
 		order.Book_id,
-		order.Payed,
+		payed,
 	)
 
 	if err != nil {
@@ -168,9 +187,19 @@ func (f *OrderRepo) GetList(ctx context.Context, req *models.GetListOrderRequest
 func (f *OrderRepo) Update(ctx context.Context, req *models.UpdateOrder) (int64, error) {
 
 	var (
-		query  = ""
-		params map[string]interface{}
+		query         = ""
+		payed         sql.NullFloat64
+		queryGetPrice string
+		params        map[string]interface{}
 	)
+
+	queryGetPrice = `
+		SELECT
+			price
+		FROM
+			books
+		WHERE book_id = $1
+	`
 
 	query = `
 		UPDATE
@@ -182,6 +211,14 @@ func (f *OrderRepo) Update(ctx context.Context, req *models.UpdateOrder) (int64,
 			updated_at = now()
 		WHERE order_id = :order_id
 	`
+	err := f.db.QueryRow(ctx, queryGetPrice, req.Book_id).
+		Scan(
+			&payed,
+		)
+
+	if err != nil {
+		return 0, err
+	}
 
 	params = map[string]interface{}{
 		"order_id": req.Id,

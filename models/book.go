@@ -18,6 +18,12 @@ type Book struct {
 	UpdatedAt string  `json:"updated_at"`
 }
 
+type UpdateBookSwagger struct {
+	Title  string  `json:"title"`
+	Author string  `json:"author"`
+	Price  float64 `json:"price"`
+}
+
 type UpdateBook struct {
 	Id     string  `json:"book_id"`
 	Title  string  `json:"title"`
