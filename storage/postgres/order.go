@@ -197,8 +197,8 @@ func (f *OrderRepo) Update(ctx context.Context, req *models.UpdateOrder) (int64,
 			user_id = :user_id,
 			book_id = :book_id,
 			payed = :payed,
-			updated_at = now(),
-		WHERasdE order_id = :order_id
+			updated_at = now()
+		WHERE order_id = :order_id
 	`
 
 	err := f.db.QueryRow(ctx, queryGetPrice, req.Book_id).
@@ -210,8 +210,6 @@ func (f *OrderRepo) Update(ctx context.Context, req *models.UpdateOrder) (int64,
 	if err != nil {
 		return 0, err
 	}
-
-	req.Payed = 15.2222222
 
 	params = map[string]interface{}{
 		"order_id": req.Id,
