@@ -24,6 +24,11 @@ type Order struct {
 	UpdatedAt string  `json:"updated_at"`
 }
 
+type OrderGroup struct {
+	FullName   string  `json:"fullname"`
+	TotalPayed float64 `json:"total_payed"`
+}
+
 type UpdateOrderSwagger struct {
 	User_id string `json:"user_id"`
 	Book_id string `json:"book_id"`
@@ -43,6 +48,6 @@ type GetListOrderRequest struct {
 }
 
 type GetListOrderResponse struct {
-	Count  int32    `json:"count"`
-	Orders []*Order `json:"orders"`
+	Count  int32         `json:"count"`
+	Orders []*OrderGroup `json:"orders"`
 }

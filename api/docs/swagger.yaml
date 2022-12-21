@@ -56,7 +56,7 @@ definitions:
         type: integer
       orders:
         items:
-          $ref: '#/definitions/models.Order'
+          $ref: '#/definitions/models.OrderGroup'
         type: array
     type: object
   models.GetListUserResponse:
@@ -82,6 +82,13 @@ definitions:
         type: string
       user_id:
         type: string
+    type: object
+  models.OrderGroup:
+    properties:
+      fullname:
+        type: string
+      total_payed:
+        type: number
     type: object
   models.UpdateBookSwagger:
     properties:

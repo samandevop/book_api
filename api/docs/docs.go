@@ -811,7 +811,7 @@ const docTemplate = `{
                 "orders": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.Order"
+                        "$ref": "#/definitions/models.OrderGroup"
                     }
                 }
             }
@@ -850,6 +850,17 @@ const docTemplate = `{
                 },
                 "user_id": {
                     "type": "string"
+                }
+            }
+        },
+        "models.OrderGroup": {
+            "type": "object",
+            "properties": {
+                "fullname": {
+                    "type": "string"
+                },
+                "total_payed": {
+                    "type": "number"
                 }
             }
         },
