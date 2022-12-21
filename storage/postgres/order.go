@@ -135,13 +135,12 @@ func (f *OrderRepo) GetList(ctx context.Context, req *models.GetListOrderRequest
 	query := `
 		SELECT
 			COUNT(*) OVER(),
-			order_id,
-			user_id,
-			book_id,
-			payed,
-			updated_at
+			users.first_name || ' ' || users.last_name as fullname,
+			SUM(orders.payed) as total_payed
 		FROM
 			orders
+		JOIN users ON orders.user_id = users.user_id
+		GROUP BY fullname
 	`
 
 	query += offset + limit
@@ -151,32 +150,23 @@ func (f *OrderRepo) GetList(ctx context.Context, req *models.GetListOrderRequest
 	for rows.Next() {
 
 		var (
-			id         sql.NullString
-			user_id    sql.NullString
-			book_id    sql.NullString
-			payed      sql.NullFloat64
-			created_at sql.NullString
+			fullname    sql.NullString
+			total_payed sql.NullFloat64
 		)
 
 		err := rows.Scan(
 			&resp.Count,
-			&id,
-			&user_id,
-			&book_id,
-			&payed,
-			&created_at,
+			&fullname,
+			&total_payed,
 		)
 
 		if err != nil {
 			return nil, err
 		}
 
-		resp.Orders = append(resp.Orders, &models.Order{
-			Id:        id.String,
-			User_id:   user_id.String,
-			Book_id:   book_id.String,
-			Payed:     payed.Float64,
-			CreatedAt: created_at.String,
+		resp.Orders = append(resp.Orders, &models.OrderGroup{
+			FullName:   fullname.String,
+			TotalPayed: total_payed.Float64,
 		})
 
 	}
@@ -188,8 +178,7 @@ func (f *OrderRepo) Update(ctx context.Context, req *models.UpdateOrder) (int64,
 
 	var (
 		query         = ""
-		payed         sql.NullFloat64
-		queryGetPrice string
+		queryGetPrice = ""
 		params        map[string]interface{}
 	)
 
@@ -208,17 +197,21 @@ func (f *OrderRepo) Update(ctx context.Context, req *models.UpdateOrder) (int64,
 			user_id = :user_id,
 			book_id = :book_id,
 			payed = :payed,
-			updated_at = now()
-		WHERE order_id = :order_id
+			updated_at = now(),
+		WHERasdE order_id = :order_id
 	`
+
 	err := f.db.QueryRow(ctx, queryGetPrice, req.Book_id).
 		Scan(
-			&payed,
+			&req.Payed,
 		)
 
+	fmt.Println(req.Payed)
 	if err != nil {
 		return 0, err
 	}
+
+	req.Payed = 15.2222222
 
 	params = map[string]interface{}{
 		"order_id": req.Id,
