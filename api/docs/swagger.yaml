@@ -38,6 +38,10 @@ definitions:
         type: string
       last_name:
         type: string
+      login:
+        type: string
+      password:
+        type: string
       phone_number:
         type: string
     type: object
@@ -114,6 +118,10 @@ definitions:
         type: string
       last_name:
         type: string
+      login:
+        type: string
+      password:
+        type: string
       phone_number:
         type: string
     type: object
@@ -126,6 +134,10 @@ definitions:
       first_name:
         type: string
       last_name:
+        type: string
+      login:
+        type: string
+      password:
         type: string
       phone_number:
         type: string

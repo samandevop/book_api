@@ -783,6 +783,12 @@ const docTemplate = `{
                 "last_name": {
                     "type": "string"
                 },
+                "login": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
                 "phone_number": {
                     "type": "string"
                 }
@@ -901,6 +907,12 @@ const docTemplate = `{
                 "last_name": {
                     "type": "string"
                 },
+                "login": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
                 "phone_number": {
                     "type": "string"
                 }
@@ -919,6 +931,12 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "last_name": {
+                    "type": "string"
+                },
+                "login": {
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 },
                 "phone_number": {

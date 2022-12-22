@@ -9,6 +9,8 @@ type Config struct {
 	PostgresPassword       string
 	PostgresPort           string
 	PostgresMaxConnections int32
+
+	AuthSecretKey string
 }
 
 func Load() Config {
@@ -23,6 +25,8 @@ func Load() Config {
 	cfg.PostgresPassword = "samandevop"
 	cfg.PostgresPort = "5432"
 	cfg.PostgresMaxConnections = 20
+
+	cfg.AuthSecretKey = "9K+WgNTglA44Hg=="
 
 	return cfg
 }

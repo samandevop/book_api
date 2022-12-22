@@ -3,6 +3,7 @@ package api
 import (
 	_ "crud/api/docs"
 	"crud/api/handler"
+	"crud/config"
 	"crud/storage"
 	"errors"
 	"net/http"
@@ -12,13 +13,15 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func SetUpApi(r *gin.Engine, storage storage.StorageI) {
+func SetUpApi(cfg *config.Config, r *gin.Engine, storage storage.StorageI) {
 
-	handlerV1 := handler.NewHandlerV1(storage)
+	handlerV1 := handler.NewHandlerV1(cfg, storage)
 
 	r.Use(customCORSMiddleware())
 
 	v1 := r.Group("/v1")
+
+	r.POST("/login", handlerV1.Login)
 
 	v1.Use(checkPassword())
 	r.POST("/book", handlerV1.CreateBook)

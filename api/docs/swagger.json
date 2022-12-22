@@ -771,6 +771,12 @@
                 "last_name": {
                     "type": "string"
                 },
+                "login": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
                 "phone_number": {
                     "type": "string"
                 }
@@ -889,6 +895,12 @@
                 "last_name": {
                     "type": "string"
                 },
+                "login": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
                 "phone_number": {
                     "type": "string"
                 }
@@ -907,6 +919,12 @@
                     "type": "string"
                 },
                 "last_name": {
+                    "type": "string"
+                },
+                "login": {
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 },
                 "phone_number": {

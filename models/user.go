@@ -1,7 +1,8 @@
 package models
 
 type UserPrimarKey struct {
-	Id string `json:"user_id"`
+	Id    string `json:"user_id"`
+	Login string `json:"login"`
 }
 
 type CreateUser struct {
