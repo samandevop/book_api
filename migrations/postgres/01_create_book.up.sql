@@ -2,6 +2,8 @@ CREATE TABLE users (
     user_id UUID NOT NULL PRIMARY KEY,
     first_name CHARACTER VARYING(45) NOT NULL,
     last_name CHARACTER VARYING(45) NOT NULL,
+    login VARCHAR NOT NULL UNIQUE,
+    password VARCHAR NOT NULL,
     phone_number VARCHAR(9) NOT NULL,
     balance NUMERIC DEFAULT 0 NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -35,10 +37,10 @@ CREATE TABLE orders (
 -- INSERT INTO orders(order_id, user_id, book_id, payed) VALUES
 -- ('5af01b9c-8092-11ed-a1eb-0242ac120002', '8b85ff2a-8091-11ed-a1eb-0242ac120002', 'f23fa31a-8091-11ed-a1eb-0242ac120002', 1500);
 
-SELECT 
-    users.first_name || ' ' || users.last_name as fullname,
-    SUM(orders.payed)
-FROM
-    orders
-JOIN users ON orders.user_id = users.user_id
-GROUP BY fullname;
+-- SELECT 
+--     users.first_name || ' ' || users.last_name as fullname,
+--     SUM(orders.payed)
+-- FROM
+--     orders
+-- JOIN users ON orders.user_id = users.user_id
+-- GROUP BY fullname;

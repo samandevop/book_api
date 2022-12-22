@@ -7,6 +7,8 @@ type UserPrimarKey struct {
 type CreateUser struct {
 	First_name   string  `json:"first_name"`
 	Last_name    string  `json:"last_name"`
+	Login        string  `json:"login"`
+	Password     string  `json:"password"`
 	Phone_number string  `json:"phone_number"`
 	Balance      float64 `json:"balance"`
 }
@@ -14,6 +16,8 @@ type User struct {
 	Id           string  `json:"user_id"`
 	First_name   string  `json:"first_name"`
 	Last_name    string  `json:"last_name"`
+	Login        string  `json:"login"`
+	Password     string  `json:"password"`
 	Phone_number string  `json:"phone_number"`
 	Balance      float64 `json:"balance"`
 	CreatedAt    string  `json:"created_at"`
@@ -23,6 +27,8 @@ type User struct {
 type UpdateUserSwagger struct {
 	First_name   string  `json:"first_name"`
 	Last_name    string  `json:"last_name"`
+	Login        string  `json:"login"`
+	Password     string  `json:"password"`
 	Phone_number string  `json:"phone_number"`
 	Balance      float64 `json:"balance"`
 }
@@ -31,6 +37,8 @@ type UpdateUser struct {
 	Id           string  `json:"user_id"`
 	First_name   string  `json:"first_name"`
 	Last_name    string  `json:"last_name"`
+	Login        string  `json:"login"`
+	Password     string  `json:"password"`
 	Phone_number string  `json:"phone_number"`
 	Balance      float64 `json:"balance"`
 }

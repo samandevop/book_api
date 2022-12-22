@@ -34,16 +34,20 @@ func (f *UserRepo) Create(ctx context.Context, user *models.CreateUser) (string,
 			user_id,
 			first_name,
 			last_name,
+			login,
+			password,
 			phone_number,
 			balance,
 			updated_at
-		) VALUES ( $1, $2, $3, $4, $5, now() )
+		) VALUES ( $1, $2, $3, $4, $5, $6, $7, now() )
 	`
 
 	_, err := f.db.Exec(ctx, query,
 		id,
 		user.First_name,
 		user.Last_name,
+		user.Login,
+		user.Password,
 		user.Phone_number,
 		user.Balance,
 	)
@@ -61,6 +65,8 @@ func (f *UserRepo) GetByPKey(ctx context.Context, pkey *models.UserPrimarKey) (*
 		id           sql.NullString
 		first_name   sql.NullString
 		last_name    sql.NullString
+		login        sql.NullString
+		password     sql.NullString
 		phone_number sql.NullString
 		balance      sql.NullFloat64
 		createdAt    sql.NullString
@@ -72,6 +78,8 @@ func (f *UserRepo) GetByPKey(ctx context.Context, pkey *models.UserPrimarKey) (*
 			user_id,
 			first_name,
 			last_name,
+			login,
+			password,
 			phone_number,
 			balance,
 			created_at,
@@ -86,6 +94,8 @@ func (f *UserRepo) GetByPKey(ctx context.Context, pkey *models.UserPrimarKey) (*
 			&id,
 			&first_name,
 			&last_name,
+			&login,
+			&password,
 			&phone_number,
 			&balance,
 			&createdAt,
@@ -100,6 +110,8 @@ func (f *UserRepo) GetByPKey(ctx context.Context, pkey *models.UserPrimarKey) (*
 		Id:           id.String,
 		First_name:   first_name.String,
 		Last_name:    last_name.String,
+		Login:        login.String,
+		Password:     password.String,
 		Phone_number: phone_number.String,
 		Balance:      balance.Float64,
 		CreatedAt:    createdAt.String,
@@ -129,6 +141,8 @@ func (f *UserRepo) GetList(ctx context.Context, req *models.GetListUserRequest) 
 			user_id,
 			first_name,
 			last_name,
+			login,
+			password,
 			phone_number,
 			balance,
 			created_at,
@@ -147,6 +161,8 @@ func (f *UserRepo) GetList(ctx context.Context, req *models.GetListUserRequest) 
 			id           sql.NullString
 			first_name   sql.NullString
 			last_name    sql.NullString
+			login        sql.NullString
+			password     sql.NullString
 			phone_number sql.NullString
 			balance      sql.NullFloat64
 			createdAt    sql.NullString
@@ -158,6 +174,8 @@ func (f *UserRepo) GetList(ctx context.Context, req *models.GetListUserRequest) 
 			&id,
 			&first_name,
 			&last_name,
+			&login,
+			&password,
 			&phone_number,
 			&balance,
 			&createdAt,
@@ -172,6 +190,8 @@ func (f *UserRepo) GetList(ctx context.Context, req *models.GetListUserRequest) 
 			Id:           id.String,
 			First_name:   first_name.String,
 			Last_name:    last_name.String,
+			Login:        login.String,
+			Password:     password.String,
 			Phone_number: phone_number.String,
 			Balance:      balance.Float64,
 			CreatedAt:    createdAt.String,
@@ -196,6 +216,8 @@ func (f *UserRepo) Update(ctx context.Context, req *models.UpdateUser) (int64, e
 		SET
 			first_name = :first_name,
 			last_name = :last_name,
+			login = :login,
+			password = :password,
 			phone_number = :phone_number,
 			balance = :balance,
 			updated_at = now()
@@ -206,6 +228,8 @@ func (f *UserRepo) Update(ctx context.Context, req *models.UpdateUser) (int64, e
 		"user_id":      req.Id,
 		"first_name":   req.First_name,
 		"last_name":    req.Last_name,
+		"login":        req.Login,
+		"password":     req.Password,
 		"phone_number": req.Phone_number,
 		"balance":      req.Balance,
 	}
