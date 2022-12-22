@@ -73,6 +73,17 @@ func (f *UserRepo) GetByPKey(ctx context.Context, pkey *models.UserPrimarKey) (*
 		updatedAt    sql.NullString
 	)
 
+	if len(pkey.Login) > 0 {
+
+		err := f.db.QueryRow(ctx, "SELECT user_id FROM users WHERE login = $1", pkey.Login).
+			Scan(&pkey.Id)
+
+		if err != nil {
+			return nil, err
+		}
+
+	}
+
 	query := `
 		SELECT
 			user_id,

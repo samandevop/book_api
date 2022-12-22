@@ -251,6 +251,53 @@ const docTemplate = `{
                 }
             }
         },
+        "/login": {
+            "post": {
+                "description": "Create Login",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Create Login",
+                "operationId": "login",
+                "parameters": [
+                    {
+                        "description": "LoginRequestBody",
+                        "name": "Login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "GetLoginBody",
+                        "schema": {
+                            "$ref": "#/definitions/models.LoginResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Argument",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/order": {
             "get": {
                 "description": "Get List Order",
@@ -833,6 +880,25 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/models.User"
                     }
+                }
+            }
+        },
+        "models.Login": {
+            "type": "object",
+            "properties": {
+                "login": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.LoginResponse": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
                 }
             }
         },

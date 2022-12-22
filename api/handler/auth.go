@@ -45,6 +45,11 @@ func (h *HandlerV1) Login(c *gin.Context) {
 		return
 	}
 
+	if login.Password != resp.Password {
+		c.JSON(http.StatusInternalServerError, errors.New("error password is not correct").Error())
+		return
+	}
+
 	data := map[string]interface{}{
 		"user_id": resp.Id,
 	}

@@ -72,6 +72,18 @@ definitions:
           $ref: '#/definitions/models.User'
         type: array
     type: object
+  models.Login:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    type: object
+  models.LoginResponse:
+    properties:
+      access_token:
+        type: string
+    type: object
   models.Order:
     properties:
       book_id:
@@ -306,6 +318,37 @@ paths:
       summary: Update Book
       tags:
       - Book
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Create Login
+      operationId: login
+      parameters:
+      - description: LoginRequestBody
+        in: body
+        name: Login
+        required: true
+        schema:
+          $ref: '#/definitions/models.Login'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: GetLoginBody
+          schema:
+            $ref: '#/definitions/models.LoginResponse'
+        "400":
+          description: Invalid Argument
+          schema:
+            type: string
+        "500":
+          description: Server Error
+          schema:
+            type: string
+      summary: Create Login
+      tags:
+      - Login
   /order:
     get:
       consumes:
