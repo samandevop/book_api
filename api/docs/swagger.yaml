@@ -349,6 +349,37 @@ paths:
       summary: Create Login
       tags:
       - Login
+  /loginsuper:
+    post:
+      consumes:
+      - application/json
+      description: Create LoginSuper
+      operationId: loginSuper
+      parameters:
+      - description: LoginSuperRequestBody
+        in: body
+        name: Login
+        required: true
+        schema:
+          $ref: '#/definitions/models.Login'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: GetLoginSuperBody
+          schema:
+            $ref: '#/definitions/models.LoginResponse'
+        "400":
+          description: Invalid Argument
+          schema:
+            type: string
+        "500":
+          description: Server Error
+          schema:
+            type: string
+      summary: Create LoginSuper
+      tags:
+      - LoginSuper
   /order:
     get:
       consumes:

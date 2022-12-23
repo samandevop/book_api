@@ -11,6 +11,8 @@ type Config struct {
 	PostgresMaxConnections int32
 
 	AuthSecretKey string
+	SuperAdmin    string
+	Client        string
 }
 
 func Load() Config {
@@ -27,6 +29,8 @@ func Load() Config {
 	cfg.PostgresMaxConnections = 20
 
 	cfg.AuthSecretKey = "9K+WgNTglA44Hg=="
+	cfg.SuperAdmin = "Super"
+	cfg.Client = "Client"
 
 	return cfg
 }

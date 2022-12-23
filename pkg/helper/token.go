@@ -13,7 +13,7 @@ type TokenInfo struct {
 }
 
 // GenerateJWT ...
-func GenerateJWT(m map[string]interface{}, tokenExpireTime time.Duration, tokenSecretKey string) (tokenString string, err error) {
+func GenerateJWT(m map[string]interface{}, tokenExpireTime time.Duration, tokenSecretKey, tokenStatus string) (tokenString string, err error) {
 	var token *jwt.Token
 
 	token = jwt.New(jwt.SigningMethodHS256)
@@ -28,6 +28,11 @@ func GenerateJWT(m map[string]interface{}, tokenExpireTime time.Duration, tokenS
 	claims["exp"] = time.Now().Add(tokenExpireTime).Unix()
 
 	tokenString, err = token.SignedString([]byte(tokenSecretKey))
+	if err != nil {
+		return "", err
+	}
+
+	tokenString, err = token.SignedString([]byte(tokenStatus))
 	if err != nil {
 		return "", err
 	}

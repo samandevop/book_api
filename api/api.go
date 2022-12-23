@@ -4,6 +4,7 @@ import (
 	_ "crud/api/docs"
 	"crud/api/handler"
 	"crud/config"
+	"crud/pkg/helper"
 	"crud/storage"
 	"errors"
 	"net/http"
@@ -20,10 +21,15 @@ func SetUpApi(cfg *config.Config, r *gin.Engine, storage storage.StorageI) {
 	r.Use(customCORSMiddleware())
 
 	v1 := r.Group("/v1")
+	v2 := r.Group("/v2")
 
 	r.POST("/login", handlerV1.Login)
+	r.POST("/loginsuper", handlerV1.LoginSuper)
 
-	v1.Use(checkPassword())
+	r.POST("/refreshclienttoken")
+
+	v1.Use(checkTokenSuper())
+	v2.Use(checkTokenClient())
 	r.POST("/book", handlerV1.CreateBook)
 	r.GET("/book/:id", handlerV1.GetBookById)
 	r.GET("/book", handlerV1.GetBookList)
@@ -36,31 +42,43 @@ func SetUpApi(cfg *config.Config, r *gin.Engine, storage storage.StorageI) {
 	r.PUT("/user/:id", handlerV1.UpdateUser)
 	r.DELETE("/user/:id", handlerV1.DeleteUser)
 
-	r.POST("/order", handlerV1.CreateOrder)
+	v2.POST("/order", handlerV1.CreateOrder)
 	v1.GET("/order/:id", handlerV1.GetOrderById)
 	v1.GET("/order", handlerV1.GetOrderList)
-	r.PUT("/order/:id", handlerV1.UpdateOrder)
-	r.DELETE("/order/:id", handlerV1.DeleteOrder)
+	v2.PUT("/order/:id", handlerV1.UpdateOrder)
+	v2.DELETE("/order/:id", handlerV1.DeleteOrder)
 
 	url := ginSwagger.URL("swagger/doc.json") // The url pointing to API definition
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 }
 
-func checkPassword() gin.HandlerFunc {
-
-	return func(c *gin.Context) {
-
-		if _, ok := c.Request.Header["Password"]; ok {
-			if c.Request.Header["Password"][0] != "samandevop" {
-				c.AbortWithError(http.StatusForbidden, errors.New("not found password"))
+func checkTokenSuper() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		if _, ok := ctx.Request.Header["Authorization"]; ok {
+			_, err := helper.ExtractClaims(ctx.Request.Header["Authorization"][0], config.Load().AuthSecretKey)
+			_, err2 := helper.ExtractClaims(ctx.Request.Header["Authorization"][0], config.Load().SuperAdmin)
+			if err != nil && err2 != nil {
+				ctx.AbortWithError(http.StatusForbidden, errors.New("not found password"))
 				return
+			} else {
+				ctx.Next()
 			}
-		} else {
-			c.AbortWithError(http.StatusForbidden, errors.New("not found password"))
-			return
 		}
+	}
+}
 
-		c.Next()
+func checkTokenClient() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		if _, ok := ctx.Request.Header["Authorization"]; ok {
+			_, err := helper.ExtractClaims(ctx.Request.Header["Authorization"][0], config.Load().AuthSecretKey)
+			_, err2 := helper.ExtractClaims(ctx.Request.Header["Authorization"][0], config.Load().Client)
+			if err != nil && err2 != nil {
+				ctx.AbortWithError(http.StatusForbidden, errors.New("not found password"))
+				return
+			} else {
+				ctx.Next()
+			}
+		}
 	}
 }
 

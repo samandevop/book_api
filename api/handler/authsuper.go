@@ -12,19 +12,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Login godoc
-// @ID login
-// @Router /login [POST]
-// @Summary Create Login
-// @Description Create Login
-// @Tags Login
+// LoginSuper godoc
+// @ID loginSuper
+// @Router /loginsuper [POST]
+// @Summary Create LoginSuper
+// @Description Create LoginSuper
+// @Tags LoginSuper
 // @Accept json
 // @Produce json
-// @Param Login body models.Login true "LoginRequestBody"
-// @Success 201 {object} models.LoginResponse "GetLoginBody"
+// @Param Login body models.Login true "LoginSuperRequestBody"
+// @Success 201 {object} models.LoginResponse "GetLoginSuperBody"
 // @Response 400 {object} string "Invalid Argument"
 // @Failure 500 {object} string "Server Error"
-func (h *HandlerV1) Login(c *gin.Context) {
+func (h *HandlerV1) LoginSuper(c *gin.Context) {
 	var login models.Login
 
 	err := c.ShouldBindJSON(&login)
@@ -54,7 +54,7 @@ func (h *HandlerV1) Login(c *gin.Context) {
 		"user_id": resp.Id,
 	}
 
-	token, err := helper.GenerateJWT(data, config.TimeExpiredAt, h.cfg.AuthSecretKey, h.cfg.Client)
+	token, err := helper.GenerateJWT(data, config.SuperTimeExpiredAt, h.cfg.AuthSecretKey, h.cfg.SuperAdmin)
 	if err != nil {
 		log.Printf("error whiling GenerateJWT: %v\n", err)
 		c.JSON(http.StatusInternalServerError, errors.New("error whiling GenerateJWT").Error())

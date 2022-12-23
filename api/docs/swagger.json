@@ -286,6 +286,53 @@
                 }
             }
         },
+        "/loginsuper": {
+            "post": {
+                "description": "Create LoginSuper",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "LoginSuper"
+                ],
+                "summary": "Create LoginSuper",
+                "operationId": "loginSuper",
+                "parameters": [
+                    {
+                        "description": "LoginSuperRequestBody",
+                        "name": "Login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "GetLoginSuperBody",
+                        "schema": {
+                            "$ref": "#/definitions/models.LoginResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Argument",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/order": {
             "get": {
                 "description": "Get List Order",
