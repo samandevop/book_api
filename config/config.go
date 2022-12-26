@@ -10,6 +10,10 @@ type Config struct {
 	PostgresPort           string
 	PostgresMaxConnections int32
 
+	RedisAddr     string
+	RedisPassword string
+	RedisDB       int
+
 	AuthSecretKey string
 	SuperAdmin    string
 	Client        string
@@ -27,6 +31,10 @@ func Load() Config {
 	cfg.PostgresPassword = "samandevop"
 	cfg.PostgresPort = "5432"
 	cfg.PostgresMaxConnections = 20
+
+	cfg.RedisAddr = "localhost:6379"
+	cfg.RedisPassword = ""
+	cfg.RedisDB = 0
 
 	cfg.AuthSecretKey = "9K+WgNTglA44Hg=="
 	cfg.SuperAdmin = "Super"

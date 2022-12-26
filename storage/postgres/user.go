@@ -134,8 +134,8 @@ func (f *UserRepo) GetList(ctx context.Context, req *models.GetListUserRequest) 
 
 	var (
 		resp   = models.GetListUserResponse{}
-		offset = " OFFSET 0"
-		limit  = " LIMIT 5"
+		offset = ""
+		limit  = ""
 	)
 
 	if req.Limit > 0 {

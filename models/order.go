@@ -25,8 +25,11 @@ type Order struct {
 }
 
 type OrderGroup struct {
-	FullName   string  `json:"fullname"`
-	TotalPayed float64 `json:"total_payed"`
+	FullName  string  `json:"fullname"`
+	Title     string  `json:"title"`
+	Payed     float64 `json:"payed"`
+	CreatedAt string  `json:"created_at"`
+	UpdatedAt string  `json:"updated_at"`
 }
 
 type UpdateOrderSwagger struct {

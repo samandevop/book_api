@@ -120,8 +120,8 @@ func (f *OrderRepo) GetList(ctx context.Context, req *models.GetListOrderRequest
 
 	var (
 		resp   = models.GetListOrderResponse{}
-		offset = " OFFSET 0"
-		limit  = " LIMIT 5"
+		offset = ""
+		limit  = ""
 	)
 
 	if req.Limit > 0 {
@@ -133,14 +133,17 @@ func (f *OrderRepo) GetList(ctx context.Context, req *models.GetListOrderRequest
 	}
 
 	query := `
-		SELECT
+		SELECT 
 			COUNT(*) OVER(),
 			users.first_name || ' ' || users.last_name as fullname,
-			SUM(orders.payed) as total_payed
+			books.title,
+			orders.payed,
+			orders.created_at,
+			orders.updated_at
 		FROM
 			orders
 		JOIN users ON orders.user_id = users.user_id
-		GROUP BY fullname
+		JOIN books ON orders.book_id = books.book_id
 	`
 
 	query += offset + limit
@@ -150,14 +153,20 @@ func (f *OrderRepo) GetList(ctx context.Context, req *models.GetListOrderRequest
 	for rows.Next() {
 
 		var (
-			fullname    sql.NullString
-			total_payed sql.NullFloat64
+			fullname   sql.NullString
+			title      sql.NullString
+			payed      sql.NullFloat64
+			created_at sql.NullString
+			updated_at sql.NullString
 		)
 
 		err := rows.Scan(
 			&resp.Count,
 			&fullname,
-			&total_payed,
+			&title,
+			&payed,
+			&created_at,
+			&updated_at,
 		)
 
 		if err != nil {
@@ -165,8 +174,11 @@ func (f *OrderRepo) GetList(ctx context.Context, req *models.GetListOrderRequest
 		}
 
 		resp.Orders = append(resp.Orders, &models.OrderGroup{
-			FullName:   fullname.String,
-			TotalPayed: total_payed.Float64,
+			FullName:  fullname.String,
+			Title:     title.String,
+			Payed:     payed.Float64,
+			CreatedAt: created_at.String,
+			UpdatedAt: updated_at.String,
 		})
 
 	}

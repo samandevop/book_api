@@ -39,8 +39,11 @@ CREATE TABLE orders (
 
 -- SELECT 
 --     users.first_name || ' ' || users.last_name as fullname,
---     SUM(orders.payed)
+--     books.title,
+--     orders.payed,
+--     orders.created_at,
+--     orders.updated_at
 -- FROM
 --     orders
 -- JOIN users ON orders.user_id = users.user_id
--- GROUP BY fullname;
+-- JOIN books ON orders.book_id = books.book_id;

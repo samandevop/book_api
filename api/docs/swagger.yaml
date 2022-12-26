@@ -101,10 +101,16 @@ definitions:
     type: object
   models.OrderGroup:
     properties:
+      created_at:
+        type: string
       fullname:
         type: string
-      total_payed:
+      payed:
         type: number
+      title:
+        type: string
+      updated_at:
+        type: string
     type: object
   models.UpdateBookSwagger:
     properties:

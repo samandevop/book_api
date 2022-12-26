@@ -975,11 +975,20 @@ const docTemplate = `{
         "models.OrderGroup": {
             "type": "object",
             "properties": {
+                "created_at": {
+                    "type": "string"
+                },
                 "fullname": {
                     "type": "string"
                 },
-                "total_payed": {
+                "payed": {
                     "type": "number"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
                 }
             }
         },

@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -10,6 +11,7 @@ import (
 	"crud/models"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis"
 )
 
 // CreateOrder godoc
@@ -49,6 +51,14 @@ func (h *HandlerV1) CreateOrder(c *gin.Context) {
 	if err != nil {
 		log.Printf("error whiling GetByPKey: %v\n", err)
 		c.JSON(http.StatusInternalServerError, errors.New("error whiling GetByPKey").Error())
+		return
+	}
+
+	err = h.cache.Order().Delete(context.Background())
+
+	if err != nil {
+		log.Printf("error whiling cache delete: %v\n", err)
+		c.JSON(http.StatusInternalServerError, errors.New("error whiling cache delete").Error())
 		return
 	}
 
@@ -125,21 +135,46 @@ func (h *HandlerV1) GetOrderList(c *gin.Context) {
 		}
 	}
 
-	resp, err := h.storage.Order().GetList(
-		context.Background(),
-		&models.GetListOrderRequest{
-			Limit:  int32(limit),
-			Offset: int32(offset),
-		},
-	)
+	orders, err := h.cache.Order().GetList(context.Background())
+	if err == redis.Nil {
 
-	if err != nil {
-		log.Printf("error whiling get list: %v", err)
-		c.JSON(http.StatusInternalServerError, errors.New("error whiling get list").Error())
-		return
+		resp, err := h.storage.Order().GetList(
+			context.Background(),
+			&models.GetListOrderRequest{
+				Limit:  int32(limit),
+				Offset: int32(offset),
+			},
+		)
+
+		if err != nil {
+			log.Printf("error whiling get list: %v", err)
+			c.JSON(http.StatusInternalServerError, errors.New("error whiling get list").Error())
+			return
+		}
+
+		fmt.Println("POSTGRES")
+
+		err = h.cache.Order().Create(context.Background(), resp)
+
+		if err != nil {
+			log.Printf("error whiling create cache list: %v", err)
+			c.JSON(http.StatusInternalServerError, errors.New("error whiling create cache list").Error())
+			return
+		}
+
+		c.JSON(http.StatusOK, resp)
+	} else {
+
+		if err != nil {
+			log.Printf("error whiling get list cache: %v", err)
+			c.JSON(http.StatusInternalServerError, errors.New("error whiling get list cache").Error())
+			return
+		}
+
+		fmt.Println("REDIS")
+
+		c.JSON(http.StatusOK, orders)
 	}
-
-	c.JSON(http.StatusOK, resp)
 }
 
 // UpdateOrder godoc
@@ -206,6 +241,26 @@ func (h *HandlerV1) UpdateOrder(c *gin.Context) {
 		return
 	}
 
+	respList, err := h.storage.Order().GetList(
+		context.Background(),
+		&models.GetListOrderRequest{
+			Limit:  int32(0),
+			Offset: int32(0),
+		},
+	)
+	if err != nil {
+		log.Printf("error whiling get list: %v", err)
+		c.JSON(http.StatusInternalServerError, errors.New("error whiling get list").Error())
+		return
+	}
+
+	err = h.cache.Order().Update(context.Background(), respList)
+	if err != nil {
+		log.Printf("error whiling update cache list: %v", err)
+		c.JSON(http.StatusInternalServerError, errors.New("error whiling update cache list").Error())
+		return
+	}
+
 	c.JSON(http.StatusOK, resp)
 }
 
@@ -242,6 +297,27 @@ func (h *HandlerV1) DeleteOrder(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, errors.New("error whiling delete").Error())
 		return
 	}
+
+	respList, err := h.storage.Order().GetList(
+		context.Background(),
+		&models.GetListOrderRequest{
+			Limit:  int32(0),
+			Offset: int32(0),
+		},
+	)
+	if err != nil {
+		log.Printf("error whiling get list: %v", err)
+		c.JSON(http.StatusInternalServerError, errors.New("error whiling get list").Error())
+		return
+	}
+
+	err = h.cache.Order().Update(context.Background(), respList)
+	if err != nil {
+		log.Printf("error whiling update cache list: %v", err)
+		c.JSON(http.StatusInternalServerError, errors.New("error whiling update cache list").Error())
+		return
+	}
+
 
 	c.JSON(http.StatusNoContent, nil)
 }

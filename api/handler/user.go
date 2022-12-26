@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -10,6 +11,7 @@ import (
 	"crud/models"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis"
 )
 
 // CreateUser godoc
@@ -49,6 +51,14 @@ func (h *HandlerV1) CreateUser(c *gin.Context) {
 	if err != nil {
 		log.Printf("error whiling GetByPKey: %v\n", err)
 		c.JSON(http.StatusInternalServerError, errors.New("error whiling GetByPKey").Error())
+		return
+	}
+
+	err = h.cache.User().Delete(context.Background())
+
+	if err != nil {
+		log.Printf("error whiling cache delete: %v\n", err)
+		c.JSON(http.StatusInternalServerError, errors.New("error whiling cache delete").Error())
 		return
 	}
 
@@ -125,21 +135,47 @@ func (h *HandlerV1) GetUserList(c *gin.Context) {
 		}
 	}
 
-	resp, err := h.storage.User().GetList(
-		context.Background(),
-		&models.GetListUserRequest{
-			Limit:  int32(limit),
-			Offset: int32(offset),
-		},
-	)
+	users, err := h.cache.User().GetList(context.Background())
+	if err == redis.Nil {
 
-	if err != nil {
-		log.Printf("error whiling get list: %v", err)
-		c.JSON(http.StatusInternalServerError, errors.New("error whiling get list").Error())
-		return
+		resp, err := h.storage.User().GetList(
+			context.Background(),
+			&models.GetListUserRequest{
+				Limit:  int32(limit),
+				Offset: int32(offset),
+			},
+		)
+
+		if err != nil {
+			log.Printf("error whiling get list: %v", err)
+			c.JSON(http.StatusInternalServerError, errors.New("error whiling get list").Error())
+			return
+		}
+
+		fmt.Println("POSTGRES")
+
+		err = h.cache.User().Create(context.Background(), resp)
+
+		if err != nil {
+			log.Printf("error whiling create cache list: %v", err)
+			c.JSON(http.StatusInternalServerError, errors.New("error whiling create cache list").Error())
+			return
+		}
+
+		c.JSON(http.StatusOK, resp)
+	} else {
+
+		if err != nil {
+			log.Printf("error whiling get list cache: %v", err)
+			c.JSON(http.StatusInternalServerError, errors.New("error whiling get list cache").Error())
+			return
+		}
+
+		fmt.Println("REDIS")
+
+		c.JSON(http.StatusOK, users)
 	}
 
-	c.JSON(http.StatusOK, resp)
 }
 
 // UpdateUser godoc
@@ -206,6 +242,26 @@ func (h *HandlerV1) UpdateUser(c *gin.Context) {
 		return
 	}
 
+	respList, err := h.storage.User().GetList(
+		context.Background(),
+		&models.GetListUserRequest{
+			Limit:  int32(0),
+			Offset: int32(0),
+		},
+	)
+	if err != nil {
+		log.Printf("error whiling get list: %v", err)
+		c.JSON(http.StatusInternalServerError, errors.New("error whiling get list").Error())
+		return
+	}
+
+	err = h.cache.User().Update(context.Background(), respList)
+	if err != nil {
+		log.Printf("error whiling update cache list: %v", err)
+		c.JSON(http.StatusInternalServerError, errors.New("error whiling update cache list").Error())
+		return
+	}
+
 	c.JSON(http.StatusOK, resp)
 }
 
@@ -240,6 +296,26 @@ func (h *HandlerV1) DeleteUser(c *gin.Context) {
 	if err != nil {
 		log.Printf("error whiling delete: %v", err)
 		c.JSON(http.StatusInternalServerError, errors.New("error whiling delete").Error())
+		return
+	}
+
+	respList, err := h.storage.User().GetList(
+		context.Background(),
+		&models.GetListUserRequest{
+			Limit:  int32(0),
+			Offset: int32(0),
+		},
+	)
+	if err != nil {
+		log.Printf("error whiling get list: %v", err)
+		c.JSON(http.StatusInternalServerError, errors.New("error whiling get list").Error())
+		return
+	}
+
+	err = h.cache.User().Update(context.Background(), respList)
+	if err != nil {
+		log.Printf("error whiling update cache list: %v", err)
+		c.JSON(http.StatusInternalServerError, errors.New("error whiling update cache list").Error())
 		return
 	}
 
